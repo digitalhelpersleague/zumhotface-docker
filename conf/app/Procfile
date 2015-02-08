@@ -1,0 +1,4 @@
+# vi: set ft=sh :
+
+job: RESQUE_TERM_TIMEOUT=7 TERM_CHILD=1 rake environment resque:work QUEUE=*
+app: unicorn -c config/unicorn.rb -E production
