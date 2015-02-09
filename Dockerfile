@@ -40,6 +40,7 @@ WORKDIR /opt/zumhotface
 ADD conf/app/.env .env
 
 ENV RUBY_CONFIGURE_OPTS --enable-shared
+ENV RAILS_ENV production
 
 RUN rbenv install \
   && rbenv rehash
