@@ -22,7 +22,6 @@ ENV LANG en_US.UTF-8
 RUN /etc/init.d/nginx stop
 
 COPY conf/nginx/zumhotface.conf /etc/nginx/sites-enabled/default
-COPY conf/app/Procfile conf/app/.env /opt/zumhotface/
 COPY entrypoint.sh run.sh /
 
 RUN chmod +x /*.sh
@@ -39,6 +38,8 @@ RUN echo 'eval "$(rbenv init -)"' >> /etc/profile
 
 RUN git clone https://github.com/digitalhelpersleague/zumhotface.git /opt/zumhotface
 WORKDIR /opt/zumhotface
+
+COPY conf/app/Procfile conf/app/.env /opt/zumhotface/
 
 ENV RUBY_CONFIGURE_OPTS --enable-shared
 ENV RAILS_ENV production
