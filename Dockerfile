@@ -10,7 +10,7 @@ RUN apt-get update \
     cmake autoconf bison libreadline6-dev zlib1g zlib1g-dev \
     build-essential libssl-dev libpq-dev libyaml-dev libicu-dev \
     git curl wget libxml2-dev libxslt1-dev libffi-dev \
-    libyaml-0-2 libpq5
+    libyaml-0-2 libpq5 file
 
 RUN locale-gen en_US.UTF-8 \
   && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
@@ -20,9 +20,11 @@ ENV LANG en_US.UTF-8
 
 # Stop nginx server
 RUN /etc/init.d/nginx stop
-ADD conf/nginx/zumhotface.conf /etc/nginx/sites-enabled/default
 
-ADD entrypoint.sh run.sh /
+COPY conf/nginx/zumhotface.conf /etc/nginx/sites-enabled/default
+COPY conf/app/Procfile conf/app/.env /opt/zumhotface/
+COPY entrypoint.sh run.sh /
+
 RUN chmod +x /*.sh
 RUN mkdir /data /var/log/zumhotface
 
@@ -37,7 +39,6 @@ RUN echo 'eval "$(rbenv init -)"' >> /etc/profile
 
 RUN git clone https://github.com/digitalhelpersleague/zumhotface.git /opt/zumhotface
 WORKDIR /opt/zumhotface
-ADD conf/app/.env .env
 
 ENV RUBY_CONFIGURE_OPTS --enable-shared
 ENV RAILS_ENV production
