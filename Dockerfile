@@ -10,7 +10,7 @@ RUN apt-get update \
     cmake autoconf bison libreadline6-dev zlib1g zlib1g-dev \
     build-essential libssl-dev libpq-dev libyaml-dev libicu-dev \
     git curl wget libxml2-dev libxslt1-dev libffi-dev \
-    libyaml-0-2 libpq5 file
+    libyaml-0-2 libpq5 file imagemagick
 
 RUN locale-gen en_US.UTF-8 \
   && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
