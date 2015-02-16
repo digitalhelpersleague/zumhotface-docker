@@ -36,20 +36,22 @@ RUN eval "$(rbenv init -)"
 RUN echo 'eval "$(rbenv init -)"' >> /etc/profile
 # TODO: maybe its better to update /etc/profile
 
+ENV RUBY_CONFIGURE_OPTS --enable-shared
+ENV RAILS_ENV production
+
+RUN rbenv install 2.2.0 && \
+  rbenv global 2.2.0 && \
+  rbenv exec gem install --no-document bundler && \
+  rbenv rehash
+
 RUN git clone https://github.com/digitalhelpersleague/zumhotface.git /opt/zumhotface
 WORKDIR /opt/zumhotface
 
 COPY conf/app/Procfile conf/app/.env /opt/zumhotface/
 
-ENV RUBY_CONFIGURE_OPTS --enable-shared
-ENV RAILS_ENV production
-
-RUN rbenv install \
-  && rbenv rehash
-RUN rbenv exec gem install --no-document bundler \
-  && rbenv rehash \
-  && rbenv exec bundle install --deployment --without development test \
-  && ZHF_SECRET_KEY=not_so_secret_key_just_for_assets_precompilation RAILS_ENV=production rbenv exec bundle exec rake assets:precompile
+RUN rbenv exec bundle install --deployment --without development test && \
+  ZHF_SECRET_KEY=hello \
+  rbenv exec bundle exec rake assets:precompile
 
 # Purge build dependencies
 RUN apt-get purge -y --auto-remove gcc g++ make patch pkg-config cmake \
