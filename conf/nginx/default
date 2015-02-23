@@ -7,9 +7,9 @@ upstream zhf_unicorn {
 }
 
 server {
-    listen 80;
+    listen 8080;
 
-    # if ZHF_SSL then 443
+    # if ZHF_SSL then 8443
     # certs section
 
     client_max_body_size 1000M;
